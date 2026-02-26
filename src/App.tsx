@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Play, Pause, ChevronDown, Heart, Calendar, MapPin, Clock, ArrowRight, User, Users } from 'lucide-react';
 import './App.css';
+import { QRCodeCanvas } from "qrcode.react";
 
 // Types
 interface WeddingData {
@@ -10,24 +11,44 @@ interface WeddingData {
   venue: string;
   address: string;
   note: string;
+  mapLink: string;
+  rsvpLink: string;
+  calendarLink: string;
+
 }
 
 const weddingData: Record<string, WeddingData> = {
   groom: {
     side: 'groom',
-    eventName: 'Wedding Ceremony',
-    time: '9:00 AM - 12:00 PM',
-    venue: 'Sri Venkateswara Temple',
-    address: 'T Nagar, Chennai',
-    note: 'Traditional ceremony followed by lunch'
+    eventName: 'Reception Celebration',
+    time: '4:00 PM - 8:00 PM',
+    venue: 'Poonoor',
+    address: 'Kozhikode',
+    note: 'Evening reception with dinner and dancing',
+    mapLink: 'https://www.google.com/maps/place/11%C2%B026\'46.4%22N+75%C2%B053\'40.3%22E/@11.4466496,75.888085,15.73z/data=!4m4!3m3!8m2!3d11.4462099!4d75.894516?hl=en&entry=ttu&g_ep=EgoyMDI2MDIyNC4wIKXMDSoASAFQAw%3D%3D',
+    rsvpLink:
+      'https://wa.me/919744698802?text=Hi!%20I%20am%20RSVPing%20for%20Vivek%20%26%20Vamika%20Reception',
+
+    calendarLink:
+      'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Vivek+%26+Vamika+Reception&dates=20260426T160000/20260426T200000&details=Reception+Celebration&location=Poonoor'
+ 
+
   },
   bride: {
     side: 'bride',
-    eventName: 'Reception Celebration',
-    time: '6:00 PM - 10:00 PM',
-    venue: 'The Grand Ballroom',
-    address: 'JW Marriott, Mumbai',
-    note: 'Evening reception with dinner and dancing'
+    eventName: 'Wedding Ceremony',
+    time: '11:00 AM - 3:00 PM',
+    venue: 'Karuvannur,Perambra',
+    address: 'Kozhikode',
+    note: 'Traditional ceremony followed by lunch',
+    mapLink: 'https://maps.app.goo.gl/bs8RpWf2s48JyupB7',
+    rsvpLink:
+      'https://wa.me/919645686563?text=Hi!%20I%20am%20RSVPing%20for%20Vivek%20%26%20Vamika%20Wedding',
+
+    calendarLink:
+      'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Vivek+%26+Vamika+Wedding&dates=20260426T110000/20260426T150000&details=Wedding+Ceremony&location=Karuvannur%2C+Perambra'
+ 
+
   }
 };
 
@@ -37,7 +58,7 @@ function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+    audioRef.current = new Audio('audio/pidayunnerente.mpeg');
     audioRef.current.loop = true;
     
     return () => {
@@ -89,22 +110,38 @@ function Navigation({ onReset }: { onReset: () => void }) {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-40 px-4 py-3 flex justify-between items-center transition-all duration-300 ${isScrolled ? 'bg-[#F6F2EA]/95 backdrop-blur-sm shadow-sm' : 'bg-gradient-to-b from-black/20 to-transparent'}`}>
-      <button onClick={onReset} className="font-serif text-lg text-[#3A2E22] tracking-wider hover:text-[#C9A87C] transition-colors">
-        V <span className="text-[#C9A87C]">•</span> V
+    <nav
+  className={`fixed top-0 left-0 right-0 z-40 px-4 py-3 flex justify-between items-center transition-all duration-300 ${
+    isScrolled
+      ? 'bg-[#F6F2EA]/95 backdrop-blur-sm shadow-sm'
+      : 'bg-gradient-to-b from-black/20 to-transparent'
+  }`}
+>
+  <button
+    onClick={onReset}
+    className={`font-serif text-lg tracking-wider transition-colors ${
+      isScrolled ? 'text-[#3A2E22] hover:text-[#C9A87C]' : 'text-[#E6D3B3] hover:text-white'
+    }`}
+  >
+    V <span className={`${isScrolled ? 'text-[#C9A87C]' : 'text-[#E6D3B3]'}`}>•</span> V
+  </button>
+
+  <div className="flex gap-4">
+    {['story', 'letter', 'gallery', 'details'].map((item) => (
+      <button
+        key={item}
+        onClick={() => scrollToSection(item)}
+        className={`text-[10px] uppercase tracking-[0.15em] transition-colors ${
+          isScrolled
+            ? 'text-[#7A6B5A] hover:text-[#C9A87C]'
+            : 'text-[#E6D3B3] hover:text-white'
+        }`}
+      >
+        {item}
       </button>
-      <div className="flex gap-4">
-        {['story', 'letter', 'gallery', 'details'].map((item) => (
-          <button 
-            key={item}
-            onClick={() => scrollToSection(item)}
-            className="text-[10px] uppercase tracking-[0.15em] text-[#7A6B5A] hover:text-[#C9A87C] transition-colors"
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-    </nav>
+    ))}
+  </div>
+</nav>
   );
 }
 
@@ -200,7 +237,7 @@ function HeroSection({ side }: { side: 'groom' | 'bride' }) {
       <div 
         className="absolute inset-0 z-[1]"
         style={{
-          backgroundImage: 'url(/images/homeimg.png)',
+          backgroundImage: 'url(images/homeimg.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -331,10 +368,10 @@ function GallerySection() {
     { src: 'images/img3.jpeg', caption: 'Walking together' },
     { src: 'images/img4.jpeg', caption: 'Beautiful mornings' },
     { src: 'images/img5.jpeg', caption: 'Cheering together' },
-    { src: 'images/img6.png', caption: 'Our sunset' },
+    { src: 'images/img6.jpeg', caption: 'Our sunset' },
     { src: 'images/img7.jpeg', caption: 'Fun time' },
     { src: 'images/img8.jpeg', caption: 'Pure happiness' },
-    { src: 'images/rings-closeup.jpg', caption: 'The promise' },
+    { src: 'images/img12.jpeg', caption: 'The promise' },
   ];
 
   return (
@@ -429,51 +466,67 @@ function DetailsSection({ side }: { side: 'groom' | 'bride' }) {
               </div>
             </div>
             
-            {/* QR Code */}
-            <div className="mt-8 pt-6 border-t border-[#E9E3DA]">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="w-28 h-28 bg-[#F6F2EA] rounded-lg flex items-center justify-center border-2 border-dashed border-[#C9A87C]/30 flex-shrink-0">
-                  <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-1 relative">
-                      {/* Simple QR pattern */}
-                      <svg viewBox="0 0 64 64" className="w-full h-full">
-                        <rect x="4" y="4" width="20" height="20" fill="#C9A87C" rx="2"/>
-                        <rect x="8" y="8" width="12" height="12" fill="white" rx="1"/>
-                        <rect x="10" y="10" width="8" height="8" fill="#C9A87C" rx="1"/>
-                        <rect x="40" y="4" width="20" height="20" fill="#C9A87C" rx="2"/>
-                        <rect x="44" y="8" width="12" height="12" fill="white" rx="1"/>
-                        <rect x="46" y="10" width="8" height="8" fill="#C9A87C" rx="1"/>
-                        <rect x="4" y="40" width="20" height="20" fill="#C9A87C" rx="2"/>
-                        <rect x="8" y="44" width="12" height="12" fill="white" rx="1"/>
-                        <rect x="10" y="46" width="8" height="8" fill="#C9A87C" rx="1"/>
-                        <rect x="32" y="32" width="6" height="6" fill="#C9A87C"/>
-                        <rect x="42" y="32" width="6" height="6" fill="#C9A87C"/>
-                        <rect x="52" y="32" width="6" height="6" fill="#C9A87C"/>
-                        <rect x="32" y="42" width="6" height="6" fill="#C9A87C"/>
-                        <rect x="44" y="44" width="4" height="4" fill="#C9A87C"/>
-                        <rect x="52" y="52" width="8" height="8" fill="#C9A87C"/>
-                      </svg>
-                    </div>
-                    <p className="text-[8px] text-[#7A6B5A]">Scan for location</p>
-                  </div>
-                </div>
-                <div className="text-center sm:text-left">
-                  <p className="text-sm text-[#7A6B5A]">{data.note}</p>
-                  <p className="text-xs text-[#C9A87C] mt-2">Scan the QR code for exact directions</p>
-                </div>
-              </div>
-            </div>
+{/* QR Code */}
+<div className="mt-8 pt-6 border-t border-[#E9E3DA]">
+  <div className="flex flex-col sm:flex-row items-center gap-6">
+
+    <a
+      href={data.mapLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-28 h-28 bg-[#F6F2EA] rounded-lg flex items-center justify-center border-2 border-dashed border-[#C9A87C]/30 flex-shrink-0 hover:scale-105 transition"
+    >
+      <div className="text-center">
+        <div className="w-16 h-16 mx-auto mb-1 relative">
+
+          <QRCodeCanvas
+            value={data.mapLink}
+            size={64}
+            bgColor="#F6F2EA"
+            fgColor="#C9A87C"
+          />
+
+        </div>
+
+        <p className="text-[8px] text-[#7A6B5A]">
+          Scan for location
+        </p>
+      </div>
+    </a>
+
+    <div className="text-center sm:text-left">
+      <p className="text-sm text-[#7A6B5A]">{data.note}</p>
+      <p className="text-xs text-[#C9A87C] mt-2">
+        Scan the QR code for exact directions
+      </p>
+    </div>
+
+  </div>
+</div>
             
             {/* CTA */}
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <button className="btn-gold flex-1 flex items-center justify-center gap-2">
-                <Heart className="w-4 h-4" fill="white" />
-                RSVP Now
-              </button>
-              <button className="btn-outline flex-1">
-                Add to Calendar
-              </button>
-            </div>
+
+  <a
+    href={data.rsvpLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="btn-gold flex-1 flex items-center justify-center gap-2"
+  >
+    <Heart className="w-4 h-4" fill="white" />
+    RSVP Now
+  </a>
+
+  <a
+    href={data.calendarLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="btn-outline flex-1 flex items-center justify-center"
+  >
+    Add to Calendar
+  </a>
+
+</div>
           </div>
         </div>
       </div>
