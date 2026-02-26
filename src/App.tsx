@@ -363,7 +363,7 @@ function LetterSection() {
 // Gallery Section
 function GallerySection() {
   const images = [
-    { src: 'images/homeimg.png', caption: 'The beginning' },
+    { src: 'images/img13.jpeg', caption: 'The beginning' },
     { src: 'images/img2.jpeg', caption: 'Moments of joy' },
     { src: 'images/img3.jpeg', caption: 'Walking together' },
     { src: 'images/img4.jpeg', caption: 'Beautiful mornings' },
