@@ -194,7 +194,7 @@ function LandingSelector({ onSelect }: { onSelect: (side: 'groom' | 'bride') => 
                 </div>
                 <div className="text-left">
                   <p className="text-white font-serif text-lg">Groom&apos;s Side</p>
-                  <p className="text-white/60 text-xs">Wedding Ceremony</p>
+                  <p className="text-white/60 text-xs">Reception Celebration</p>
                 </div>
               </div>
               <ArrowRight className="w-5 h-5 text-[#C9A87C] group-hover:translate-x-1 transition-transform" />
@@ -212,7 +212,7 @@ function LandingSelector({ onSelect }: { onSelect: (side: 'groom' | 'bride') => 
                 </div>
                 <div className="text-left">
                   <p className="text-white font-serif text-lg">Bride&apos;s Side</p>
-                  <p className="text-white/60 text-xs">Reception Celebration</p>
+                  <p className="text-white/60 text-xs">Wedding Ceremony</p>
                 </div>
               </div>
               <ArrowRight className="w-5 h-5 text-[#D4A5A5] group-hover:translate-x-1 transition-transform" />
