@@ -1,0 +1,117 @@
+/* App-specific styles */
+
+/* Hero section responsive adjustments */
+@media (max-width: 640px) {
+  .text-shadow-hero {
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+}
+
+/* Gallery masonry improvements */
+.columns-2 {
+  column-count: 2;
+}
+
+.columns-3 {
+  column-count: 3;
+}
+
+@media (max-width: 768px) {
+  .columns-2,
+  .columns-3 {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .columns-2,
+  .columns-3 {
+    column-count: 2;
+    column-gap: 0.75rem;
+  }
+}
+
+/* Break inside avoid for masonry items */
+.break-inside-avoid {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Timeline responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 1rem;
+  }
+}
+
+/* Card hover effects */
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+
+/* Smooth transitions */
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+.transition-shadow {
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Button press effect */
+.btn-gold:active,
+.btn-outline:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Navigation link underline effect */
+nav button {
+  position: relative;
+}
+
+nav button::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #C9A87C;
+  transition: width 0.3s ease;
+}
+
+nav button:hover::after {
+  width: 100%;
+}
+
+/* Ensure proper text wrapping */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Aspect ratio utilities */
+.aspect-\[3\/4\] {
+  aspect-ratio: 3 / 4;
+}
+
+.aspect-\[4\/3\] {
+  aspect-ratio: 4 / 3;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-\[16\/9\] {
+  aspect-ratio: 16 / 9;
+}
+
+/* Loading lazy images */
+img[loading="lazy"] {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
